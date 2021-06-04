@@ -58,6 +58,10 @@ const movieSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('movie', movieSchema);
