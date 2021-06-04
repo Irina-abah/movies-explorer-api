@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const userRoutes = require('./users');
+const movieRoutes = require('./movies');
 const { register, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
@@ -27,6 +28,8 @@ router.post('/signin', celebrate({
 }), login);
 
 router.use('/users', auth, userRoutes);
+router.use('/movies', auth, movieRoutes);
+
 router.use('*', () => {
   throw new NotFoundError('Ресурс не найден');
 });
