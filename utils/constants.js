@@ -23,6 +23,10 @@ const AUTH_ERROR = 'Authorization required';
 const SERVER_ERROR = 'Sorry, server error';
 const LIMITER_ERROR = 'Too many requests, please try again later';
 
+const URL_NOT_VALID = 'URL is not valid';
+const EMAIL_NOT_VALID = 'Incorrect email';
+const RESPONSE_OK = 200;
+
 module.exports = {
   EMAIL_REGEX,
   URL_REGEX,
@@ -32,4 +36,7 @@ module.exports = {
   AUTH_ERROR,
   SERVER_ERROR,
   LIMITER_ERROR,
+  URL_NOT_VALID,
+  EMAIL_NOT_VALID,
+  RESPONSE_OK,
 };

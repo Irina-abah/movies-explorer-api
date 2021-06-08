@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { isURL } = require('validator');
+const { URL_NOT_VALID } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -29,17 +30,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: [isURL, 'URL is not valid'],
+    validate: [isURL, URL_NOT_VALID],
   },
   trailer: {
     type: String,
     required: true,
-    validate: [isURL, 'URL is not valid'],
+    validate: [isURL, URL_NOT_VALID],
   },
   thumbnail: {
     type: String,
     required: true,
-    validate: [isURL, 'URL is not valid'],
+    validate: [isURL, URL_NOT_VALID],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

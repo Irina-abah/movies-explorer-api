@@ -1,9 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
-const MOVIE_ERROR_MESSAGES = require('../utils/constants');
-
-const RESPONSE_OK = 200;
+const { MOVIE_ERROR_MESSAGES, RESPONSE_OK } = require('../utils/constants');
 
 const getAllMovies = (req, res, next) => {
   Movie.find({})
