@@ -19,9 +19,9 @@ const createMovie = (req, res, next) => {
     image,
     trailer,
     thumbnail,
-    nameRU,
-    ameEN,
     movieId,
+    nameRU,
+    nameEN,
   } = req.body;
   const owner = req.user._id;
 
@@ -34,16 +34,12 @@ const createMovie = (req, res, next) => {
     image,
     trailer,
     thumbnail,
-    nameRU,
-    ameEN,
     movieId,
+    nameRU,
+    nameEN,
     owner,
   })
-    .then((movie) => {
-      Movie.findById(movie._id)
-        .populate('owner');
-      res.status(RESPONSE_OK).send(movie);
-    })
+    .then((movie) => res.status(RESPONSE_OK).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_CREATE);
