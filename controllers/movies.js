@@ -1,6 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
+const MOVIE_ERROR_MESSAGES = require('../utils/constants');
 
 const RESPONSE_OK = 200;
 
@@ -47,7 +48,7 @@ const createMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError('Cannot create a movie');
+        throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_CREATE);
       }
     })
     .catch(next);
@@ -58,18 +59,18 @@ const deleteMovie = (req, res, next) => {
     .orFail(new Error('NotFound'))
     .then((movie) => {
       if (movie) {
-        return res.status(RESPONSE_OK).send({ message: 'Movie was successfully deleted' });
+        return res.status(RESPONSE_OK).send({ message: MOVIE_ERROR_MESSAGES.DELETE_SUCCESS });
       }
       if (!movie.owner.equals(req.user._id)) {
-        throw new BadRequestError('Sorry, you cannot delete moview created by other users');
+        throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_PERMISSION_DELETE_ERROR);
       }
       return movie;
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Cannot find and delete a movie');
+        throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_GENERAL_DELETE_ERROR);
       } if (err.message === 'NotFound') {
-        throw new NotFoundError('Cannot find a movie');
+        throw new NotFoundError(MOVIE_ERROR_MESSAGES.NO_FOUND_ERROR);
       }
     })
     .catch(next);

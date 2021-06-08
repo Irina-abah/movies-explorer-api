@@ -5,13 +5,14 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
 const cors = require('cors');
-const limiter = require('./utils/rateLimiter');
-const router = require('./routes/index');
+const limiter = require('./middlewares/rateLimiter');
+const allRoutes = require('./routes/index');
+const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
-const { PORT, DB_HOST } = process.env;
+const { PORT, DB_HOST, databaseParams } = require('./utils/config');
 
 app.use(cors());
 app.use(limiter);
@@ -19,18 +20,16 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
-app.use(router());
 
-mongoose.connect(DB_HOST, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
+mongoose.connect(DB_HOST, databaseParams);
+
+app.use(allRoutes);
 
 app.use(errorLogger);
 
 app.use(errors());
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

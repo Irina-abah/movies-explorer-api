@@ -1,11 +1,20 @@
 const { celebrate, Joi } = require('celebrate');
 
-const { EMAIL_REGEX } = require('../utils/constants');
+const { EMAIL_REGEX, URL_REGEX } = require('../utils/constants');
 
 const validateNewMovie = celebrate({
   body: Joi.object().keys({
-    country: ,
-    director: ,
+    country: Joi.string().required().min(2).max(30),
+    director: Joi.string().required().min(2).max(30),
+    duration: Joi.string().hex().required(),
+    year: Joi.string().required().length(4),
+    description: Joi.string().required(),
+    image: Joi.string().required().regex(URL_REGEX),
+    trailer: Joi.string().required().regex(URL_REGEX),
+    thumbnail: Joi.string().required().regex(URL_REGEX),
+    movieId: Joi.string().hex().required(),
+    nameRU: Joi.string().required().min(2).max(30),
+    nameEN: Joi.string().required().min(2).max(30),
   }),
 });
 
@@ -31,7 +40,7 @@ const validateLogin = celebrate({
 
 const validateRegister = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().email().regex(EMAIL_REGEX),
     password: Joi.string().required().min(8),
   }),
