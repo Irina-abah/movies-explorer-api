@@ -50,12 +50,10 @@ const login = (req, res, next) => {
         throw new BadAuthError(USER_ERROR_MESSAGES.INCORRECT_DATA_ERROR);
       }
       return bcrypt.compare(password, user.password)
-        // eslint-disable-next-line consistent-return
         .then((matched) => {
           if (!matched) {
             throw new BadAuthError(USER_ERROR_MESSAGES.INCORRECT_DATA_ERROR);
           }
-          // eslint-disable-next-line max-len
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret', { expiresIn: '7d' });
           res.status(RESPONSE_OK).send({ token });
         })
@@ -74,6 +72,7 @@ const updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { email, name }, {
     new: true,
     runValidators: true,
+    context: 'query',
   })
     .orFail(new Error('NotFound'))
     .then((user) => res.status(RESPONSE_OK).send(user))
