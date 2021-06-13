@@ -7,13 +7,13 @@ const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
 const BadAuthError = require('../errors/bad-auth-error');
-const { USER_ERROR_MESSAGES, RESPONSE_OK } = require('../utils/constants');
+const { USER_ERROR_MESSAGES } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => res.status(RESPONSE_OK).send(user))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -26,7 +26,7 @@ const register = (req, res, next) => {
     .then((hash) => User.create({
       name, email, password: hash,
     }))
-    .then((user) => res.status(RESPONSE_OK).send({
+    .then((user) => res.send({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -55,7 +55,7 @@ const login = (req, res, next) => {
             throw new BadAuthError(USER_ERROR_MESSAGES.INCORRECT_DATA_ERROR);
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret', { expiresIn: '7d' });
-          res.status(RESPONSE_OK).send({ token });
+          res.send({ token });
         })
         .catch(next);
     });
@@ -70,7 +70,7 @@ const updateUserInfo = (req, res, next) => {
     context: 'query',
   })
     .orFail(new NotFoundError(USER_ERROR_MESSAGES.NO_FOUND_ERROR))
-    .then((user) => res.status(RESPONSE_OK).send(user))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(USER_ERROR_MESSAGES.NO_UPDATE_ERROR);

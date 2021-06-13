@@ -24,7 +24,6 @@ const LIMITER_ERROR = 'Too many requests, please try again later';
 
 const URL_NOT_VALID = 'URL is not valid';
 const EMAIL_NOT_VALID = 'Incorrect email';
-const RESPONSE_OK = 200;
 
 module.exports = {
   EMAIL_REGEX,
@@ -37,5 +36,4 @@ module.exports = {
   LIMITER_ERROR,
   URL_NOT_VALID,
   EMAIL_NOT_VALID,
-  RESPONSE_OK,
 };
