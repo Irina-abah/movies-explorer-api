@@ -63,8 +63,9 @@ const deleteMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_GENERAL_DELETE_ERROR);
+      } else {
+        throw err;
       }
-      throw err;
     })
     .catch(next);
 };

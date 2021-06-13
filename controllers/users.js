@@ -34,8 +34,8 @@ const register = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'MongoError' && err.code === 11000) {
         throw new ConflictError(USER_ERROR_MESSAGES.UNIQUE_EMAIL_ERROR);
-      } if (err.name === 'ValidationError') {
-        throw new BadRequestError(USER_ERROR_MESSAGES.REGISTRATION_ERROR);
+      } else {
+        throw err;
       }
     })
     .catch(next);
@@ -57,13 +57,8 @@ const login = (req, res, next) => {
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret', { expiresIn: '7d' });
           res.status(RESPONSE_OK).send({ token });
         })
-        .catch((err) => {
-          if (err.statusCode === 401) {
-            throw new BadAuthError(USER_ERROR_MESSAGES.INCORRECT_DATA_ERROR);
-          }
-        });
-    })
-    .catch(next);
+        .catch(next);
+    });
 };
 
 const updateUserInfo = (req, res, next) => {
@@ -74,14 +69,13 @@ const updateUserInfo = (req, res, next) => {
     runValidators: true,
     context: 'query',
   })
-    .orFail(new Error('NotFound'))
+    .orFail(new NotFoundError(USER_ERROR_MESSAGES.NO_FOUND_ERROR))
     .then((user) => res.status(RESPONSE_OK).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(USER_ERROR_MESSAGES.NO_UPDATE_ERROR);
-      } if (err.message === 'NotFound') {
-        throw new NotFoundError(USER_ERROR_MESSAGES.NO_FOUND_ERROR);
       }
+      throw err;
     })
     .catch(next);
 };
