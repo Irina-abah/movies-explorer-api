@@ -50,7 +50,7 @@ const createMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   Movie.findByIdAndRemove(req.params.id)
-    .orFail(new Error('NotFound'))
+    .orFail(new NotFoundError(MOVIE_ERROR_MESSAGES.NO_FOUND_ERROR))
     .then((movie) => {
       if (movie) {
         return res.status(RESPONSE_OK).send({ message: MOVIE_ERROR_MESSAGES.DELETE_SUCCESS });
@@ -63,9 +63,8 @@ const deleteMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_GENERAL_DELETE_ERROR);
-      } if (err.message === 'NotFound') {
-        throw new NotFoundError(MOVIE_ERROR_MESSAGES.NO_FOUND_ERROR);
       }
+      throw err;
     })
     .catch(next);
 };
