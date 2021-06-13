@@ -1,6 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
+const ForbiddenError = require('../errors/forbidden-error');
 const { MOVIE_ERROR_MESSAGES, RESPONSE_OK } = require('../utils/constants');
 
 const getAllMovies = (req, res, next) => {
@@ -56,7 +57,7 @@ const deleteMovie = (req, res, next) => {
         return res.status(RESPONSE_OK).send({ message: MOVIE_ERROR_MESSAGES.DELETE_SUCCESS });
       }
       if (!movie.owner.equals(req.user._id)) {
-        throw new BadRequestError(MOVIE_ERROR_MESSAGES.NO_PERMISSION_DELETE_ERROR);
+        throw new ForbiddenError(MOVIE_ERROR_MESSAGES.NO_PERMISSION_DELETE_ERROR);
       }
       return movie;
     })
