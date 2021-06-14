@@ -1,6 +1,3 @@
-const EMAIL_REGEX = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-const URL_REGEX = /^https?:\/\/(www\.)*([a-z\d\\-]+\.[a-z]+)(\/?\w+)+/;
-
 const MOVIE_ERROR_MESSAGES = {
   NO_FOUND_ERROR: 'Cannot find a movie',
   NO_GENERAL_DELETE_ERROR: 'Cannot find and delete a movie',
@@ -26,8 +23,6 @@ const URL_NOT_VALID = 'URL is not valid';
 const EMAIL_NOT_VALID = 'Incorrect email';
 
 module.exports = {
-  EMAIL_REGEX,
-  URL_REGEX,
   MOVIE_ERROR_MESSAGES,
   USER_ERROR_MESSAGES,
   GENERAL_NO_FOUND_ERROR,
