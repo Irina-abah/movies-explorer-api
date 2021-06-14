@@ -5,9 +5,7 @@ const { register, login } = require('../controllers/users');
 const { validateLogin, validateRegister } = require('../middlewares/validators');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
-const BadAuthError = require('../errors/bad-auth-error');
 const { GENERAL_NO_FOUND_ERROR } = require('../utils/constants');
-const { AUTH_ERR } = require('../utils/constants');
 
 router.get('/crash-test', () => {
   setTimeout(() => {
