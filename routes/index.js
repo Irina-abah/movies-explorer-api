@@ -22,12 +22,8 @@ router.post('/signin', validateLogin, login);
 router.use('/users', auth, userRoutes);
 router.use('/movies', auth, movieRoutes);
 
-router.use('*', auth, (res) => {
-  if (res.statusCode === 401) {
-    throw new BadAuthError(AUTH_ERR);
-  } else {
-    throw new NotFoundError(GENERAL_NO_FOUND_ERROR);
-  }
+router.use('*', auth, () => {
+  throw new NotFoundError(GENERAL_NO_FOUND_ERROR);
 });
 
 module.exports = router;
