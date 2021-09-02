@@ -3,7 +3,7 @@ const { LIMITER_ERROR } = require('../utils/constants');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1005,
   message: LIMITER_ERROR,
 });
 
